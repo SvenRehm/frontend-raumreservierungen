@@ -8,7 +8,9 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@daypilot/daypilot-lite-vue": "^3.10.0",
     "vue": "^3.2.37",
+    "vue-cal": "^4.3.4",
     "vue-router": "^4.1.2"
   },
   "devDependencies": {

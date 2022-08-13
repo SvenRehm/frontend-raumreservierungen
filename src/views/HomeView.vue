@@ -1,9 +1,13 @@
 <script setup>
-import HomeComponents from "@/components/HomeComponents.vue"
+// import ListOfRooms from "@/components/ListOfRooms.vue"
+
+// import CalenderComponent from "../components/CalenderComponent.vue";
+import ScedulerComponent from "../components/ScedulerComponent.vue";
+
 </script>
 
 <template>
-   <main>
-      <HomeComponents />
-   </main>
+   <!-- <ListOfRooms /> -->
+   <!-- <CalenderComponent /> -->
+   <ScedulerComponent />
 </template>
