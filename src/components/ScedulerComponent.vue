@@ -3,10 +3,12 @@ import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import 'vue-cal/dist/i18n/de.es.js'
 import { ref, watch } from 'vue'
-import { useUserStore } from '../stores/users'
+// import { useUserStore } from '../stores/users'
 import { sceduledEvents } from '../stores/sceduledEvents'
+import { ModalStore } from '../stores/ModalStore'
 
 const store = sceduledEvents()
+const modalStore = ModalStore()
 
 store.fetchEvents()
 
@@ -33,6 +35,7 @@ const selectedEvent = ref(null)
 const showDialog = ref(true)
 
 const onEventClick = (event, e) => {
+    modalStore.openModal()
     selectedEvent.value = event
     showDialog.value = true
     e.stopPropagation()
@@ -42,6 +45,7 @@ const onEventClick = (event, e) => {
 
 
 const onEventCreate = (event, deleteEventFunction) => {
+
     const newEvent = {
         ...event, start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
         end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
@@ -92,21 +96,20 @@ const onEventCreate = (event, deleteEventFunction) => {
 
 
 </script>
-
+ <!-- :split-days="[{ id: 1, label: 'Room 1' }, { id: 2, label: 'Room 2' },]" -->
 <template>
     <!-- <VueCal style="height: 500px" locale="de" :events="events" :on-event-click="onEventClick"
         :on-event-create="onEventCreate"
         :editable-events="{ title: true, drag: false, resize: false, delete: true, create: true }"
         class="vuecal--full-height-delete"></VueCal> -->
 
-
-    <vue-cal ref="vuecal" hide-weekends hide-title-bar :events="store.events" :cell-click-hold="false"
-        :drag-to-create-event="false" :on-event-create="onEventCreate" @cell-dblclick="$refs.vuecal.createEvent(
-            $event,
-            120,
-            { title: 'New Event', class: 'room 1' }
-        
-        )" :editable-events="{ title: true, drag: false, resize: false, delete: true, create: true }">
+    <!-- :on-event-dblclick="onEventClick" -->
+    <vue-cal ref="vuecal" hide-weekends hide-title-bar :events="store.events" :on-event-dblclick="onEventClick"
+        :cell-click-hold="false" :drag-to-create-event="false" :on-event-create="onEventCreate" @cell-dblclick="$refs.vuecal.createEvent(
+        $event,
+        120,
+        { title: 'New Event', class: 'room 2', label: 'Room 2', })"
+        :editable-events="{ title: false, drag: false, resize: false, delete: true, create: true }">
     </vue-cal>
 
 
@@ -114,5 +117,8 @@ const onEventCreate = (event, deleteEventFunction) => {
 
 
 
-<style scoped>
+<style >
+.vuecal__event {
+    cursor: pointer
+}
 </style>

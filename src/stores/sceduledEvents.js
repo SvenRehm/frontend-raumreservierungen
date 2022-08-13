@@ -27,16 +27,17 @@ export const sceduledEvents = defineStore("event",{
         }
       },
       addEvent(event,e){
+        console.log(e)
         this.events.push(event)
         axios.post('http://localhost:3000/events', {
-    ...event
+        ...event
 
-}).then(resp => {
-    // console.log(resp.data);
-}).catch(error => {
-    // console.log(error);
-});
+        }).then(resp => {
+        console.log(resp.data);
+        }).catch(error => {
+        console.log(error);
+        });
 
-      }
+        }
     },
 })
