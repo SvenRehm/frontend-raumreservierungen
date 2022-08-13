@@ -35,37 +35,56 @@ const showDialog = ref(true)
 const onEventClick = (event, e) => {
     selectedEvent.value = event
     showDialog.value = true
-
-    // Prevent navigating to narrower view (default vue-cal behavior).
     e.stopPropagation()
-    // console.log(e)
+
+
 }
+
 
 const onEventCreate = (event, deleteEventFunction) => {
     const newEvent = {
         ...event, start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
         end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
+        blac: event.start,
+        black: event.end,
 
     }
-
     const date = new Date(newEvent.start);
     const dateEnd = new Date(newEvent.end);
 
-    const start = new Date(store.events[0].start);
-    const end = new Date(store.events[0].end);
+    // const start = new Date(store.events[0].start);
+    // const end = new Date(store.events[0].end);
+
+
+
 
 
     const compareClasses = store.events.filter(item => {
-        item.class.toLowerCase() === "room 2"
+        return item.class.toLowerCase() == event.class.toLowerCase()
     })
-    console.log(compareClasses)
 
+    const startDateExistsAlready = compareClasses.some((item) => {
+        const start = new Date(item.start)
+        const end = new Date(item.end)
+        if (date >= start && date <= end) {
+            return true
+        }
+    })
+    const endDateExistsAlready = compareClasses.some((item) => {
+        const start = new Date(item.start)
+        const end = new Date(item.end)
+        if (dateEnd > start && dateEnd < end) {
+            return true
+        }
+    })
 
-
-
-
-
-
+    if (startDateExistsAlready || endDateExistsAlready) {
+        alert("event exists already in that time")
+        deleteEventFunction
+        return false
+    } else {
+        store.addEvent(newEvent)
+    }
 
 }
 
@@ -85,7 +104,7 @@ const onEventCreate = (event, deleteEventFunction) => {
         :drag-to-create-event="false" :on-event-create="onEventCreate" @cell-dblclick="$refs.vuecal.createEvent(
             $event,
             120,
-            { title: 'New Event', class: 'room 2' }
+            { title: 'New Event', class: 'room 1' }
         
         )" :editable-events="{ title: true, drag: false, resize: false, delete: true, create: true }">
     </vue-cal>
