@@ -2,24 +2,33 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import 'vue-cal/dist/i18n/de.es.js'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useUserStore } from '../stores/users'
+import { sceduledEvents } from '../stores/sceduledEvents'
+
+const store = sceduledEvents()
+
+store.fetchEvents()
 
 
-const events = ref([
-    {
-        start: '2022-8-12 10:30',
-        end: '2022-8-12 22:30',
-        // You can also define event dates with Javascript Date objects:
-        // start: new Date(2018, 11 - 1, 16, 10, 30),
-        // end: new Date(2018, 11 - 1, 16, 11, 30),
-        title: 'Room 1',
-        content: '<i class="icon material-icons">local_hospital</i>',
-        class: 'room1',
+watch(
+    () => store.events,
+    () => {
+        store.fetchEvents()
+        // fires only when state.someObject is replaced
+    }
+)
+// console.log(store.events)
 
-        deletable: true,
-        resizable: false,
-        draggable: false
-    }])
+// const events = ref([
+//     {
+//         start: '2022-8-12 10:30',
+//         end: '2022-8-12 22:30',
+//         title: 'Room 1',
+//         content: " local_hospital",
+//         class: 'room1',
+
+//     }])
 const selectedEvent = ref(null)
 const showDialog = ref(true)
 
@@ -33,43 +42,35 @@ const onEventClick = (event, e) => {
 }
 
 const onEventCreate = (event, deleteEventFunction) => {
-    // You can modify event here and return it.
-    // You can also return false to reject the event creation.
-    // alert("not allowed")
+    const newEvent = {
+        ...event, start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
+        end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
 
-    // if (1 === 1) {
-    //     // alert("allowed")
-    //     return true
-    // }
-    // else {
-    //     alert("not allowed")
-    //     return false
-    // }
-
-
-    const date = new Date(event.start);
-    // const dateEnd = new Date(event.end);
-
-    const start = new Date(events.value[0].start);
-    const end = new Date(events.value[0].end);
-
-    if (date > start && date < end) {
-        console.log('✅ date is between the 2 dates');
-        return false
-    } else {
-        console.log('⛔️ date is not in the range');
     }
-    events.value.push(event)
-    // console.log(events.value[0].start, events.value[0].end)
+
+    const date = new Date(newEvent.start);
+    const dateEnd = new Date(newEvent.end);
+
+    const start = new Date(store.events[0].start);
+    const end = new Date(store.events[0].end);
+
+
+    const compareClasses = store.events.filter(item => {
+        item.class.toLowerCase() === "room 2"
+    })
+    console.log(compareClasses)
 
 
 
-    return true
+
+
+
+
+
 }
 
 
 
-// @cell-click=
 
 </script>
 
@@ -80,12 +81,13 @@ const onEventCreate = (event, deleteEventFunction) => {
         class="vuecal--full-height-delete"></VueCal> -->
 
 
-    <vue-cal ref="vuecal" hide-weekends hide-title-bar :events="events" :cell-click-hold="false"
-        :drag-to-create-event="false" :on-event-create="onEventCreate" @cell-click="$refs.vuecal.createEvent(
+    <vue-cal ref="vuecal" hide-weekends hide-title-bar :events="store.events" :cell-click-hold="false"
+        :drag-to-create-event="false" :on-event-create="onEventCreate" @cell-dblclick="$refs.vuecal.createEvent(
             $event,
             120,
-            { title: 'New Event', class: 'blue-event' }
-        )" editable-events>
+            { title: 'New Event', class: 'room 2' }
+        
+        )" :editable-events="{ title: true, drag: false, resize: false, delete: true, create: true }">
     </vue-cal>
 
 
