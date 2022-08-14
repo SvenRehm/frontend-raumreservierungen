@@ -1,0 +1,17 @@
+{
+  "events": [],
+  "users": [
+    {
+      "userId": 1,
+      "userName": "test",
+      "email": "test@gmail.com",
+      "admin": false
+    },
+    {
+      "userId": 2,
+      "userName": "test2",
+      "email": "test2@gmail.com",
+      "admin": true
+    }
+  ]
+}

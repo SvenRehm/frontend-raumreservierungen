@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 
 
-
-export const ModalStore = defineStore("interface",{
+export const ModalStore = defineStore("modal",{
+ 
     state: () => ({
         showModal:false
 

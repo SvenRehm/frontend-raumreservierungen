@@ -1,28 +1,69 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 import { ModalStore } from '../stores/ModalStore'
+import { sceduledEvents } from '../stores/sceduledEvents'
+import { ref } from 'vue';
 
 
-const store = ModalStore()
+const eventStore = sceduledEvents()
+
+const modalStore = ModalStore()
+const room = ref("Raum 1")
+const title = ref("Ihr Name")
+
+// onMounted(() => {
+
+// })
+
+const handleSubmit = () => {
+
+    eventStore.changeRoom(room.value)
+    eventStore.changeName(title.value)
+    eventStore.editEvent(eventStore.selectedEvent.id)
+    title.value = eventStore.selectedEvent.title
+    // eventStore.fetchEvents()
+}
+
+const handleDelete = () => {
+    eventStore.deleteEvent(eventStore.selectedEvent.id)
+    modalStore.closeModal()
+    // eventStore.fetchEvents()
+}
+
 
 </script>
 
 <template>
     <div>
-        <vue-final-modal v-model="store.showModal" :click-to-close="false" classes="modal-container"
+        <vue-final-modal v-model="modalStore.showModal" :click-to-close="false" classes="modal-container"
             content-class="modal-content">
 
-            <button class="modal__close" @click="store.closeModal()">
-                <mdi-close>X</mdi-close>
+            <button class="modal__close" @click="modalStore.closeModal()">
+                X
             </button>
-            <span class="modal__title">Hello, vue-final-modal</span>
+            <span class="modal__title">{{ eventStore.selectedEvent?.title }}</span>
             <div class="modal__content">
-                <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
-                <input type="text">
+                <p>{{ eventStore.selectedEvent?.label }}</p>
+
+                <form>
+                    <input v-model="title">
+                    <select v-model="room">
+                        <option value="Raum 1">Raum 1</option>
+                        <option value="Raum 2">Raum 2</option>
+                        <option value="Raum 3">Raum 3</option>
+                    </select>
+                </form>
+                <button @click="handleSubmit">Save</button>
+                <button @click="handleDelete">Delete</button>
+                <!-- <input type="text" :v-modal="eventStore.selectedEvent?.title"> -->
             </div>
 
+
+
+
+
         </vue-final-modal>
-        <button @click="store.openModal()">Open Modal</button>
+        <!-- <button @click="modalStore.openModal()">Open Modal</button> -->
     </div>
 
 </template>
