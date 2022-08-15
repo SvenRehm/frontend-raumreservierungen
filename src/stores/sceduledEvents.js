@@ -65,8 +65,7 @@ export const sceduledEvents = defineStore("event",{
             this.events=filterEvents
              
                 }).catch(error => {
-                    // alert(error)
-                    
+                     alert(error)
                 });
     
             },

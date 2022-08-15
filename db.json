@@ -1,5 +1,32 @@
 {
-  "events": [],
+  "events": [
+    {
+      "_eid": "266_1",
+      "start": "2022-08-14 03:08",
+      "startTimeMinutes": 186,
+      "end": "2022-08-14 05:08",
+      "endTimeMinutes": 306,
+      "title": "Ihr Name",
+      "content": "content",
+      "background": false,
+      "allDay": false,
+      "segments": null,
+      "repeat": null,
+      "daysCount": 1,
+      "deletable": true,
+      "deleting": false,
+      "titleEditable": true,
+      "resizable": true,
+      "resizing": false,
+      "draggable": true,
+      "dragging": false,
+      "draggingStatic": false,
+      "focused": false,
+      "class": "Raum 1",
+      "label": "Raum 1",
+      "id": 1
+    }
+  ],
   "users": [
     {
       "userId": 1,

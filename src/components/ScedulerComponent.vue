@@ -21,7 +21,6 @@ onMounted(() => {
 
 
 const onEventClick = (event, e) => {
-
     const newEvent = {
         ...event,
         start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
@@ -76,7 +75,7 @@ const onEventCreate = (event, deleteEventFunction) => {
 
 
     eventStore.addEvent(newEvent)
-
+    modalStore.openModal()
 
 }
 
