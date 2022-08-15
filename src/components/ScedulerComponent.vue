@@ -6,19 +6,21 @@ import 'vue-cal/dist/i18n/de.es.js'
 import { onMounted } from 'vue'
 // import { useUserStore } from '../stores/users'
 import { sceduledEvents } from '../stores/sceduledEvents'
+
+
 import { ModalStore } from '../stores/ModalStore'
 import { userStore } from '../stores/userStore'
+import { ref } from 'vue'
 
 const user = userStore()
 
 const eventStore = sceduledEvents()
 const modalStore = ModalStore()
 
-
+const view = ref("")
 
 onMounted(() => {
     eventStore.fetchEvents()
-
 })
 
 
@@ -39,6 +41,7 @@ const onEventClick = (event, e) => {
 
 const onEventCreate = (event) => {
     if (!user.accessToken) return
+    if (view.value) return
     const newEvent = {
         ...event,
         start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
@@ -79,7 +82,10 @@ const onEventCreate = (event) => {
 
 }
 
-
+const onViewChange = (e) => {
+    console.log(e.view === "day")
+    view.value = e.view !== "day"
+}
 
 
 </script>
@@ -90,6 +96,7 @@ const onEventCreate = (event) => {
     <!-- :on-event-dblclick="onEventClick" -->
     <vue-cal ref="vuecal" hide-weekends locale="de" :events="eventStore.events" style="width: 70vw;  margin: 0 auto;"
         :on-event-dblclick="onEventClick" :cell-click-hold="false" :on-event-create="onEventCreate"
+        @view-change="onViewChange"
         @cell-dblclick="$refs.vuecal.createEvent(
         $event,
         120,
