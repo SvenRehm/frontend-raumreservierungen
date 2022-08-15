@@ -1,5 +1,5 @@
 <script setup>
-import Login from "@/components/Login.vue";
+import LoginComponent from "@/components/LoginComponent.vue";
 
 // import ListOfRooms from "@/components/ListOfRooms.vue"
 
@@ -11,6 +11,6 @@ import Login from "@/components/Login.vue";
 <template>
     <!-- <ListOfRooms /> -->
     <!-- <CalenderComponent /> -->
-    <Login />
+    <LoginComponent />
 
 </template>

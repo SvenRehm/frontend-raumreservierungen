@@ -3,6 +3,7 @@ import { VueFinalModal } from 'vue-final-modal'
 
 import { ModalStore } from '../stores/ModalStore'
 import { sceduledEvents } from '../stores/sceduledEvents'
+
 import { ref } from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';

@@ -1,11 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router"
 import { userStore } from '@/stores/userStore'
+
+
 const user = userStore()
 
 const logUserOut = () => {
    user.logUserOut()
-   alert("Du bist ausgeloggt")
+   alert("Du bist ausgeloggt worden")
 }
 
 </script>
@@ -14,9 +16,9 @@ const logUserOut = () => {
    <header>
       <nav>
          <RouterLink to="/">Home</RouterLink>
+         <RouterLink v-if="user.user?.admin" to="Admin">Admin</RouterLink>
          <a href="/" @click.prevent="logUserOut" v-if="user.accessToken">Ausloggen</a>
-         <RouterLink to="Login" v-else-if="!user.accessToken">Einloggen</RouterLink>
-
+         <RouterLink to="Login" v-if="!user.accessToken">Einloggen</RouterLink>
       </nav>
    </header>
 

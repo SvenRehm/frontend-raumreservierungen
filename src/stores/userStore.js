@@ -1,15 +1,13 @@
 import { defineStore } from 'pinia'
-
 import axios from "axios"
-import { useRouter } from 'vue-router'
 
 const USER_API_URL= "http://localhost:3000"
-const router = useRouter()
+
 
 export const userStore = defineStore("userStore",{
 
     state: () => ({
-        user:{},
+        user:null,
         accessToken:"",
         error:""
     }),
@@ -21,10 +19,11 @@ export const userStore = defineStore("userStore",{
               const data = await axios.post(`${USER_API_URL}/login`, {
                 ...user
               });
-                this.user =data.data.user
+                this.user = data.data.user
                 this.accessToken=data.data.accessToken
                 this.error=""
                 this.router.push('/');
+   
               }
               catch (error) {
                 this.error=error.response.data
