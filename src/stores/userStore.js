@@ -10,7 +10,7 @@ export const userStore = defineStore("userStore",{
 
     state: () => ({
         user:{},
-        accessTokes:"",
+        accessToken:"",
         error:""
     }),
     getters: {},
@@ -21,14 +21,15 @@ export const userStore = defineStore("userStore",{
               const data = await axios.post(`${USER_API_URL}/login`, {
                 ...user
               });
-                this.router.push('/');
                 this.user =data.data.user
-                this.accessTokes=data.data.accessToken
-           
+                this.accessToken=data.data.accessToken
+                this.error=""
+                this.router.push('/');
               }
               catch (error) {
-                this.error=error
-                alert(error)
+                this.error=error.response.data
+                // console.log(error.response)
+                // alert(error)
               
             }
           },
@@ -38,7 +39,7 @@ export const userStore = defineStore("userStore",{
                 ...user
               });
                 this.user =data.data.user
-                this.accessTokes=data.data.accessToken
+                this.accessToken=data.data.accessToken
               }
               catch (error) {
                 this.error=error
@@ -49,8 +50,9 @@ export const userStore = defineStore("userStore",{
 
           logUserOut(){
             this.user={},
-            this.accessTokes=""
-          }
+            this.accessToken=""
+          },
+          
        
     },
 })

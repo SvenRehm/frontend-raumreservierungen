@@ -6,6 +6,9 @@ import { sceduledEvents } from '../stores/sceduledEvents'
 import { ref } from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
+import { userStore } from '../stores/userStore'
+
+const user = userStore()
 
 
 
@@ -13,13 +16,10 @@ import 'flatpickr/dist/flatpickr.css';
 const eventStore = sceduledEvents()
 const modalStore = ModalStore()
 
-
-// const startTime = ref("2022-08-17 18:00")
-// const endTime = ref("2022-08-16 10:00")
 const startTime = ref(null)
 const endTime = ref(null)
 
-// watchEffect(() => eventStore.changeRoom(room.value));
+
 
 
 const chekifTimeisAvail = () => {
@@ -59,6 +59,8 @@ const chekifTimeisAvail = () => {
 
 
 const handleSubmit = () => {
+    if (!user.accessToken) return
+
     if (chekifTimeisAvail()) return
     eventStore.editTime(startTime.value, endTime.value)
     eventStore.editEvent(eventStore.selectedEvent.id)
@@ -68,6 +70,7 @@ const handleSubmit = () => {
 }
 
 const handleDelete = () => {
+    if (!user.accessToken) return
     eventStore.deleteEvent(eventStore.selectedEvent.id)
     eventStore.changeName("")
     modalStore.closeModal()
@@ -75,15 +78,11 @@ const handleDelete = () => {
 }
 
 
-
-
 const config = {
     enableTime: true,
     time_24hr: true,
 
 }
-
-
 
 
 </script>
@@ -107,7 +106,6 @@ const config = {
                         @input="event => eventStore.changeName(event.target.value)">
 
 
-
                     <select value="title.value" @input="event => eventStore.changeRoom(event.target.value)">
                         <option value="Raum 1">Raum 1</option>
                         <option value="Raum 2">Raum 2</option>
@@ -116,8 +114,6 @@ const config = {
 
                     <flat-pickr v-model="startTime" :config="config"> </flat-pickr>
                     <flat-pickr v-model="endTime" :config="config"> </flat-pickr>
-
-
 
                     <button @click="handleSubmit">Save</button>
                     <button @click="handleDelete">Delete</button>

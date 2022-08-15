@@ -7,7 +7,9 @@ import { onMounted } from 'vue'
 // import { useUserStore } from '../stores/users'
 import { sceduledEvents } from '../stores/sceduledEvents'
 import { ModalStore } from '../stores/ModalStore'
+import { userStore } from '../stores/userStore'
 
+const user = userStore()
 
 const eventStore = sceduledEvents()
 const modalStore = ModalStore()
@@ -22,8 +24,6 @@ onMounted(() => {
 
 
 const onEventClick = (event, e) => {
-    // const findEventClicked = eventStore.events.filter(item => item.id == event.id)
-    // console.log(findEventClicked)
     const newEvent = {
         ...event,
         start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
@@ -38,7 +38,7 @@ const onEventClick = (event, e) => {
 }
 
 const onEventCreate = (event) => {
-
+    if (!user.accessToken) return
     const newEvent = {
         ...event,
         start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
@@ -46,8 +46,6 @@ const onEventCreate = (event) => {
         status: "pending",
 
     }
-
-
     const date = new Date(newEvent.start);
     const dateEnd = new Date(newEvent.end);
 
@@ -90,8 +88,8 @@ const onEventCreate = (event) => {
 
 
     <!-- :on-event-dblclick="onEventClick" -->
-    <vue-cal ref="vuecal" hide-weekends locale="de" :events="eventStore.events" :on-event-dblclick="onEventClick"
-        :cell-click-hold="false" :on-event-create="onEventCreate"
+    <vue-cal ref="vuecal" hide-weekends locale="de" :events="eventStore.events" style="width: 70vw;  margin: 0 auto;"
+        :on-event-dblclick="onEventClick" :cell-click-hold="false" :on-event-create="onEventCreate"
         @cell-dblclick="$refs.vuecal.createEvent(
         $event,
         120,
@@ -109,4 +107,41 @@ const onEventCreate = (event) => {
 .vuecal__event {
     cursor: pointer
 }
+
+.vuecal__flex .vuecal__title button {
+    color: rgb(175, 175, 175);
+}
+
+.angle {
+    /* background-color: rgb(175, 175, 175); */
+    color: rgb(175, 175, 175);
+}
+
+/* .vuecal__menu,
+.vuecal__cell-events-count {
+    background-color: #42b983;
+}
+
+.vuecal__title-bar {
+    background-color: #e4f5ef;
+}
+
+.vuecal__cell--today,
+.vuecal__cell--current {
+    background-color: rgba(240, 240, 255, 0.4);
+}
+
+.vuecal:not(.vuecal--day-view) .vuecal__cell--selected {
+    background-color: rgba(235, 255, 245, 0.4);
+}
+
+.vuecal__cell--selected:before {
+    border-color: rgba(66, 185, 131, 0.5);
+}
+
+
+.vuecal__arrow.vuecal__arrow--highlighted,
+.vuecal__view-btn.vuecal__view-btn--highlighted {
+    background-color: rgba(136, 236, 191, 0.25);
+} */
 </style>
