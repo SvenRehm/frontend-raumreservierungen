@@ -2,7 +2,8 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import 'vue-cal/dist/i18n/de.es.js'
-import { ref, watch, onMounted } from 'vue'
+
+import { onMounted } from 'vue'
 // import { useUserStore } from '../stores/users'
 import { sceduledEvents } from '../stores/sceduledEvents'
 import { ModalStore } from '../stores/ModalStore'
@@ -21,28 +22,32 @@ onMounted(() => {
 
 
 const onEventClick = (event, e) => {
+    // const findEventClicked = eventStore.events.filter(item => item.id == event.id)
+    // console.log(findEventClicked)
     const newEvent = {
         ...event,
         start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
         end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
     }
-
 
     modalStore.openModal()
     e.stopPropagation()
     eventStore.updateSelectedEvent(newEvent)
-    eventStore.fetchEvents()
+    // eventStore.fetchEvents()
 
 }
 
+const onEventCreate = (event) => {
 
-const onEventCreate = (event, deleteEventFunction) => {
     const newEvent = {
         ...event,
         start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
         end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
+        status: "pending",
 
     }
+
+
     const date = new Date(newEvent.start);
     const dateEnd = new Date(newEvent.end);
 
@@ -66,16 +71,13 @@ const onEventCreate = (event, deleteEventFunction) => {
         }
     })
 
-
     if (startDateExistsAlready || endDateExistsAlready) {
         alert("event exists already in that time")
-        deleteEventFunction()
         return false
     }
 
-
     eventStore.addEvent(newEvent)
-    modalStore.openModal()
+    // modalStore.openModal()
 
 }
 
@@ -85,18 +87,16 @@ const onEventCreate = (event, deleteEventFunction) => {
 </script>
  <!-- :split-days="[{ id: 1, label: 'Room 1' }, { id: 2, label: 'Room 2' },]" -->
 <template>
-    <!-- <VueCal style="height: 500px" locale="de" :events="events" :on-event-click="onEventClick"
-        :on-event-create="onEventCreate"
-        :editable-events="{ title: true, drag: false, resize: false, delete: true, create: true }"
-        class="vuecal--full-height-delete"></VueCal> -->
+
 
     <!-- :on-event-dblclick="onEventClick" -->
     <vue-cal ref="vuecal" hide-weekends locale="de" :events="eventStore.events" :on-event-dblclick="onEventClick"
-        :cell-click-hold="false" :drag-to-create-event="true" :on-event-create="onEventCreate" @cell-dblclick="$refs.vuecal.createEvent(
+        :cell-click-hold="false" :on-event-create="onEventCreate"
+        @cell-dblclick="$refs.vuecal.createEvent(
         $event,
         120,
-        eventStore.defaultNewEvent)"
-        :editable-events="{ title: false, drag: false, resize: false, delete: true, create: true }"
+        { title: eventStore.selectedEvent.title, class: eventStore.selectedEvent.class, label: eventStore.selectedEvent.label, content: eventStore.selectedEvent.content })"
+        :editable-events="{ title: false, drag: false, resize: false, delete: true, create: false }"
         :disable-views="['years']">
     </vue-cal>
 

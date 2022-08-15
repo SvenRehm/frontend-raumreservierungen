@@ -1,13 +1,13 @@
 {
   "events": [
     {
-      "_eid": "266_1",
-      "start": "2022-08-14 03:08",
-      "startTimeMinutes": 186,
-      "end": "2022-08-14 05:08",
-      "endTimeMinutes": 306,
-      "title": "Ihr Name",
-      "content": "content",
+      "_eid": "6_16",
+      "start": "2022-08-18 12:00",
+      "startTimeMinutes": 720,
+      "end": "2022-08-18 15:00",
+      "endTimeMinutes": 900,
+      "title": "232323",
+      "content": "",
       "background": false,
       "allDay": false,
       "segments": null,
@@ -21,24 +21,19 @@
       "draggable": true,
       "dragging": false,
       "draggingStatic": false,
-      "focused": false,
-      "class": "Raum 1",
-      "label": "Raum 1",
+      "focused": true,
+      "class": "Raum 2",
+      "status": "pending",
       "id": 1
     }
   ],
   "users": [
     {
-      "userId": 1,
-      "userName": "test",
-      "email": "test@gmail.com",
-      "admin": false
-    },
-    {
-      "userId": 2,
-      "userName": "test2",
-      "email": "test2@gmail.com",
-      "admin": true
+      "email": "test2@test",
+      "password": "$2a$10$Nnpsw5nd7FjwfNUOjkie8.6wogdpwGsiVyYwnGo/UFZyA2M7C2P6O",
+      "name": "test2",
+      "admin": true,
+      "id": 2
     }
   ]
 }

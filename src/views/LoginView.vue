@@ -1,12 +1,16 @@
 <script setup>
+import Login from "@/components/Login.vue";
+
 // import ListOfRooms from "@/components/ListOfRooms.vue"
 
 // import CalenderComponent from "../components/CalenderComponent.vue";
-import ScedulerComponent from "../components/ScedulerComponent.vue";
-import ModalComponent from "../components/ModalComponent.vue";
+
+
 </script>
 
 <template>
-   <ScedulerComponent />
-   <ModalComponent />
+    <!-- <ListOfRooms /> -->
+    <!-- <CalenderComponent /> -->
+    <Login />
+
 </template>

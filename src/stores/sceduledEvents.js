@@ -10,11 +10,10 @@ export const sceduledEvents = defineStore("event",{
         events: [],
         error:null,
         startId:0,
-        selectedEvent:{},
+        selectedEvent:{  title: "Name", class:"Raum 1"},
         allRooms: ['raum 1', 'raum 2', 'raum 3'],
         selectedRoom:"",
         deleteEventFunction :null,
-        defaultNewEvent:{ title: 'Ihr Name', class: 'Raum 1', label: 'Raum 1', content:"content" }
     }),
    
     getters: { },
@@ -37,10 +36,14 @@ export const sceduledEvents = defineStore("event",{
       },
       changeRoom(newRoom){
     
-    this.selectedEvent.label=newRoom
+    this.selectedEvent.class=newRoom
       },
+      editTime(startTime,endTime){
+        this.selectedEvent.start=startTime
+        this.selectedEvent.end=endTime
+       
+          },
       updateSelectedEvent(updatedEvent){
-    
         this.selectedEvent=updatedEvent
           },
  
@@ -57,7 +60,6 @@ export const sceduledEvents = defineStore("event",{
             });
         },
         deleteEvent(id){
-        
             axios.delete(`${API_URL}/events/${id}`).then(res=> {
               const filterEvents = this.events.filter((item)=>{ 
                 return item.id!==id;
@@ -78,12 +80,13 @@ export const sceduledEvents = defineStore("event",{
                 if (index !== -1) {
                   this.events[index].title = this.selectedEvent.title;
                   this.events[index].label = this.selectedEvent.label;
+                  this.events[index].class = this.selectedEvent.class;
                 }
                 axios.put(`${API_URL}/events/${id}`, {
                   ...this.selectedEvent
               }).then(resp => {
        
-              console.log(resp);
+              // console.log(resp);
 
               }).catch(error => {
               
