@@ -60,7 +60,7 @@ const newTimeSlotAvailable = (newEvent, event) => {
 
     if (startDateExistsAlready || endDateExistsAlready) {
         alert("event exists already in that time")
-        return false
+        return true
     }
 }
 
@@ -74,8 +74,8 @@ const onEventCreate = (event) => {
         status: "pending",
         title: user.user?.name
     }
-
-    newTimeSlotAvailable(newEvent, event)
+    if (newTimeSlotAvailable(newEvent, event)) return
+    // newTimeSlotAvailable(newEvent, event)
     eventStore.addEvent(newEvent)
 }
 
