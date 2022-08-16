@@ -73,7 +73,6 @@ const handleDelete = () => {
 const adminEditEvent = () => {
     const newStatus = "approved"
     const newEvent = { ...eventStore.selectedEvent, status: newStatus }
-
     eventStore.adminEditEvent(eventStore.selectedEvent.id, newEvent)
 
 }
