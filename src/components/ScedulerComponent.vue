@@ -2,12 +2,8 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import 'vue-cal/dist/i18n/de.es.js'
-
 import { onMounted } from 'vue'
-// import { useUserStore } from '../stores/users'
 import { sceduledEvents } from '../stores/sceduledEvents'
-
-
 import { ModalStore } from '../stores/ModalStore'
 import { userStore } from '../stores/userStore'
 import { ref } from 'vue'
@@ -31,7 +27,6 @@ const onEventClick = (event, e) => {
         start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
         end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
     }
-
     modalStore.openModal()
     e.stopPropagation()
     eventStore.updateSelectedEvent(newEvent)
@@ -39,19 +34,10 @@ const onEventClick = (event, e) => {
 
 }
 
-const onEventCreate = (event) => {
-    if (!user.accessToken) return
-    if (view.value) return
-    const newEvent = {
-        ...event,
-        start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
-        end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
-        status: "pending",
 
-    }
+const newTimeSlotAvailable = (newEvent, event) => {
     const date = new Date(newEvent.start);
     const dateEnd = new Date(newEvent.end);
-
     const compareClasses = eventStore.events.filter(item => {
         return item.class.toLowerCase() == event.class.toLowerCase()
     })
@@ -76,24 +62,31 @@ const onEventCreate = (event) => {
         alert("event exists already in that time")
         return false
     }
+}
 
+const onEventCreate = (event) => {
+    if (!user.accessToken) return
+    if (view.value) return
+    const newEvent = {
+        ...event,
+        start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
+        end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
+        status: "pending",
+        name: "Name"
+    }
+
+    newTimeSlotAvailable(newEvent, event)
     eventStore.addEvent(newEvent)
-    // modalStore.openModal()
-
 }
 
 const onViewChange = (e) => {
-    console.log(e.view === "day")
     view.value = e.view !== "day"
 }
 
 
 </script>
- <!-- :split-days="[{ id: 1, label: 'Room 1' }, { id: 2, label: 'Room 2' },]" -->
+
 <template>
-
-
-    <!-- :on-event-dblclick="onEventClick" -->
     <vue-cal ref="vuecal" hide-weekends locale="de" :events="eventStore.events" style="width: 70vw;  margin: 0 auto;"
         :on-event-dblclick="onEventClick" :cell-click-hold="false" :on-event-create="onEventCreate"
         @view-change="onViewChange"
@@ -103,11 +96,26 @@ const onViewChange = (e) => {
         { title: eventStore.selectedEvent.title, class: eventStore.selectedEvent.class, label: eventStore.selectedEvent.label, content: eventStore.selectedEvent.content })"
         :editable-events="{ title: false, drag: false, resize: false, delete: true, create: false }"
         :disable-views="['years']">
+
+
+        <template #event="{ event }">
+            <v-icon>{{ event.icon }}</v-icon>
+
+            <div class="vuecal__event-title" v-html="event.title" />
+            <!-- <span v-if="$slots.actions" class="divider"></span> -->
+            <div v-if="event.status == 'approved'" class="vuecal__event-approved" v-html="event.status" />
+            <div v-if="event.status == 'pending'" class="vuecal__event-pending" v-html="event.status" />
+
+            <small class="vuecal__event-time">
+                <!-- Using Vue Cal Date prototypes -->
+                <span>{{ event.start.formatTime("HH:mm") }}</span> -
+                <span>{{ event.end.formatTime("HH:mm") }}</span>
+            </small>
+        </template>
+
+
     </vue-cal>
-
-
 </template>
-
 
 
 <style >
@@ -115,13 +123,32 @@ const onViewChange = (e) => {
     cursor: pointer
 }
 
+.vuecal__event.raum1 {
+    background-color: rgb(255, 155, 155);
+}
+
+.vuecal__event.raum2 {
+    background-color: rgb(65, 211, 255);
+}
+
+.vuecal__event.raum3 {
+    background-color: rgb(233, 124, 255)
+}
+
 .vuecal__flex .vuecal__title button {
     color: rgb(175, 175, 175);
 }
 
 .angle {
-    /* background-color: rgb(175, 175, 175); */
     color: rgb(175, 175, 175);
+}
+
+.vuecal__event-pending {
+    color: rgb(255, 179, 64)
+}
+
+.vuecal__event-approved {
+    color: green
 }
 
 /* .vuecal__menu,

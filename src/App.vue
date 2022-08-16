@@ -1,12 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router"
 import { userStore } from '@/stores/userStore'
-
+import router from '@/router';
 
 const user = userStore()
 
 const logUserOut = () => {
    user.logUserOut()
+   router.push('/login');
    alert("Du bist ausgeloggt worden")
 }
 

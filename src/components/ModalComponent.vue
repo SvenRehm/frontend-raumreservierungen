@@ -1,37 +1,36 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 
-import { ModalStore } from '../stores/ModalStore'
+import { ModalStore } from '@/stores/ModalStore'
 import { sceduledEvents } from '../stores/sceduledEvents'
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import { userStore } from '../stores/userStore'
+import { userStore } from '@/stores/userStore'
+
+
 
 const user = userStore()
-
-
-
-
 const eventStore = sceduledEvents()
 const modalStore = ModalStore()
 
-const startTime = ref(null)
-const endTime = ref(null)
+
+console.log(eventStore.selectedEvent)
 
 
+const timeSlotAvailable = () => {
 
-
-const chekifTimeisAvail = () => {
-
-    const date = new Date(startTime.value);
-    const dateEnd = new Date(endTime.value);
+    const date = new Date(eventStore.selectedEvent.start);
+    const dateEnd = new Date(eventStore.selectedEvent.end);
+    if (dateEnd <= date) {
+        alert("Start Zeit > End Zeit")
+        return true
+    }
     const filterByClass = eventStore.events.filter(item => {
         return item.class.toLowerCase() == eventStore.selectedEvent.class.toLowerCase()
     })
     const filterId = filterByClass.filter(item => {
-
         return item.id !== eventStore.selectedEvent.id
     })
 
@@ -61,19 +60,19 @@ const chekifTimeisAvail = () => {
 
 const handleSubmit = () => {
     if (!user.accessToken) return
-
-    if (chekifTimeisAvail()) return
-    eventStore.editTime(startTime.value, endTime.value)
+    if (!eventStore.selectedEvent.start || !eventStore.selectedEvent.end) { alert("Zeit auswählen"); return }
+    if (timeSlotAvailable()) return
+    eventStore.editTime(eventStore.selectedEvent.start, eventStore.selectedEvent.end)
     eventStore.editEvent(eventStore.selectedEvent.id)
-    eventStore.changeName("")
-    eventStore.fetchEvents()
+
+    // eventStore.fetchEvents()
     modalStore.closeModal()
 }
 
 const handleDelete = () => {
     if (!user.accessToken) return
     eventStore.deleteEvent(eventStore.selectedEvent.id)
-    eventStore.changeName("")
+    // eventStore.changeName("")
     modalStore.closeModal()
     // eventStore.fetchEvents()
 }
@@ -84,7 +83,6 @@ const config = {
     time_24hr: true,
 
 }
-
 
 </script>
 
@@ -100,21 +98,23 @@ const config = {
             <span class="modal__title">{{ eventStore.selectedEvent?.class }}</span>
             <div class="modal__content">
                 <div class="modal-inner">
-                    <p>NAME:{{ eventStore.selectedEvent?.title }}</p>
-                    <p>STATUS:{{ eventStore.selectedEvent?.status }}</p>
+                    <p>Name: {{ eventStore.selectedEvent?.title }}</p>
+                    <p>Status: {{ eventStore.selectedEvent?.status }}</p>
                     <label for="name">Name</label>
-                    <input type="text" id="name" :value="eventStore.selectedEvent?.title"
-                        @input="event => eventStore.changeName(event.target.value)">
+                    <!-- <input type="text" id="name" :value="eventStore.selectedEvent?.title"
+                        @input="event => eventStore.changeName(event.target.value)"> -->
 
 
-                    <select value="title.value" @input="event => eventStore.changeRoom(event.target.value)">
-                        <option value="Raum 1">Raum 1</option>
-                        <option value="Raum 2">Raum 2</option>
-                        <option value="Raum 3">Raum 3</option>
+                    <input v-model="eventStore.selectedEvent.title">
+
+                    <select v-model="eventStore.selectedEvent.class">
+                        <option value="raum1">Raum 1</option>
+                        <option value="raum2">Raum 2</option>
+                        <option value="raum3">Raum 3</option>
                     </select>
 
-                    <flat-pickr v-model="startTime" :config="config"> </flat-pickr>
-                    <flat-pickr v-model="endTime" :config="config"> </flat-pickr>
+                    <flat-pickr v-model="eventStore.selectedEvent.start" :config="config"> </flat-pickr>
+                    <flat-pickr v-model="eventStore.selectedEvent.end" :config="config"> </flat-pickr>
 
                     <button @click="handleSubmit">Save</button>
                     <button @click="handleDelete">Delete</button>
@@ -122,8 +122,6 @@ const config = {
                 </div>
 
             </div>
-
-
 
         </vue-final-modal>
         <!-- <button @click="modalStore.openModal()">Open Modal</button> -->

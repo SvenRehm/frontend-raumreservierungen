@@ -7,11 +7,9 @@ import { userStore } from '../stores/userStore'
 
 const user = userStore()
 
-
 const loginInfo = ref({
     email: "",
     password: "",
-
 }
 
 )
