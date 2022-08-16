@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia'
 import axios from "axios"
 
-
 const API_URL="http://localhost:3000"
 
+
 export const sceduledEvents = defineStore("sceduledEvents",{
+
     state: () => ({
         events: [],
         error:null,
-        selectedEvent:{  title: "Name", class:"raum1"},
+        selectedEvent:{ class:"raum1"},
         selectedRoom:"",
         
     }),

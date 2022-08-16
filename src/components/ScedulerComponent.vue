@@ -72,7 +72,7 @@ const onEventCreate = (event) => {
         start: new Date(event.start).format("YYYY-MM-DD HH:MM"),
         end: new Date(event.end).format("YYYY-MM-DD HH:MM"),
         status: "pending",
-        name: "Name"
+        title: user.user?.name
     }
 
     newTimeSlotAvailable(newEvent, event)
@@ -93,7 +93,7 @@ const onViewChange = (e) => {
         @cell-dblclick="$refs.vuecal.createEvent(
         $event,
         120,
-        { title: eventStore.selectedEvent.title, class: eventStore.selectedEvent.class, label: eventStore.selectedEvent.label, content: eventStore.selectedEvent.content })"
+        { title: user.user?.name, class: eventStore.selectedEvent.class, label: eventStore.selectedEvent.label, content: eventStore.selectedEvent.content })"
         :editable-events="{ title: false, drag: false, resize: false, delete: true, create: false }"
         :disable-views="['years']">
 
