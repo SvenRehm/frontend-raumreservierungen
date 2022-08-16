@@ -14,7 +14,8 @@ npm install
 
 ```sh
 npm run dev
-and
+
+
 json-server db.json -m ./node_modules/json-server-auth
 
 ```
