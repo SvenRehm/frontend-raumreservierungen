@@ -42,9 +42,13 @@ nav a.router-link-exact-active {
    color: white;
 }
 
+nav a:first-child {
+   border: none
+}
+
 nav a {
    display: inline-block;
    padding: 0 1rem;
-   border-left: 1px solid var(--color-border);
+   border-left: 1.3px solid rgb(31, 31, 31);
 }
 </style>

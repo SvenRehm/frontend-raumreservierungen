@@ -34,11 +34,11 @@ export const userStore = defineStore("userStore",{
                 this.accessToken=data.data.accessToken
               }
               catch (error) {
-                this.error=error
                 alert(error)
+                this.error=error.response.data
+         
             }
           },
-
           logUserOut(){
             this.user={},
             this.accessToken=""
