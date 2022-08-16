@@ -97,23 +97,17 @@ const onViewChange = (e) => {
         :editable-events="{ title: false, drag: false, resize: false, delete: true, create: false }"
         :disable-views="['years']">
 
-
         <template #event="{ event }">
-            <v-icon>{{ event.icon }}</v-icon>
-
             <div class="vuecal__event-title" v-html="event.title" />
             <!-- <span v-if="$slots.actions" class="divider"></span> -->
             <div v-if="event.status == 'approved'" class="vuecal__event-approved" v-html="event.status" />
             <div v-if="event.status == 'pending'" class="vuecal__event-pending" v-html="event.status" />
-
             <small class="vuecal__event-time">
                 <!-- Using Vue Cal Date prototypes -->
                 <span>{{ event.start.formatTime("HH:mm") }}</span> -
                 <span>{{ event.end.formatTime("HH:mm") }}</span>
             </small>
         </template>
-
-
     </vue-cal>
 </template>
 
@@ -124,7 +118,7 @@ const onViewChange = (e) => {
 }
 
 .vuecal__event.raum1 {
-    background-color: rgb(255, 155, 155);
+    background-color: rgb(255, 227, 133);
 }
 
 .vuecal__event.raum2 {
@@ -144,38 +138,10 @@ const onViewChange = (e) => {
 }
 
 .vuecal__event-pending {
-    color: rgb(255, 179, 64)
+    color: rgb(255, 161, 20)
 }
 
 .vuecal__event-approved {
     color: green
 }
-
-/* .vuecal__menu,
-.vuecal__cell-events-count {
-    background-color: #42b983;
-}
-
-.vuecal__title-bar {
-    background-color: #e4f5ef;
-}
-
-.vuecal__cell--today,
-.vuecal__cell--current {
-    background-color: rgba(240, 240, 255, 0.4);
-}
-
-.vuecal:not(.vuecal--day-view) .vuecal__cell--selected {
-    background-color: rgba(235, 255, 245, 0.4);
-}
-
-.vuecal__cell--selected:before {
-    border-color: rgba(66, 185, 131, 0.5);
-}
-
-
-.vuecal__arrow.vuecal__arrow--highlighted,
-.vuecal__view-btn.vuecal__view-btn--highlighted {
-    background-color: rgba(136, 236, 191, 0.25);
-} */
 </style>

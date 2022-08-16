@@ -81,6 +81,7 @@ export const sceduledEvents = defineStore("sceduledEvents",{
             }); 
             if (index !== -1) {
               this.events[index].status = editedEvent.status
+              this.selectedEvent.status = editedEvent.status
             }
             axios.put(`${API_URL}/events/${id}`, {
               ...editedEvent
