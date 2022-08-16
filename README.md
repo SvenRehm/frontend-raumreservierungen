@@ -15,15 +15,10 @@ npm install
 ```sh
 npm run dev
 
-
 json-server db.json -m ./node_modules/json-server-auth
+# with json-server installed globally and json-server-auth installed locally
 
 ```
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
 
 
