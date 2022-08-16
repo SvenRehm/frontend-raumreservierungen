@@ -1,10 +1,7 @@
-<script setup>
+div<script setup>
 import { VueFinalModal } from 'vue-final-modal'
-
 import { ModalStore } from '@/stores/ModalStore'
 import { sceduledEvents } from '../stores/sceduledEvents'
-
-import { ref, onMounted } from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import { userStore } from '@/stores/userStore'
@@ -16,7 +13,7 @@ const eventStore = sceduledEvents()
 const modalStore = ModalStore()
 
 
-console.log(eventStore.selectedEvent)
+
 
 
 const timeSlotAvailable = () => {
@@ -64,19 +61,22 @@ const handleSubmit = () => {
     if (timeSlotAvailable()) return
     eventStore.editTime(eventStore.selectedEvent.start, eventStore.selectedEvent.end)
     eventStore.editEvent(eventStore.selectedEvent.id)
-
-    // eventStore.fetchEvents()
     modalStore.closeModal()
 }
 
 const handleDelete = () => {
     if (!user.accessToken) return
     eventStore.deleteEvent(eventStore.selectedEvent.id)
-    // eventStore.changeName("")
     modalStore.closeModal()
-    // eventStore.fetchEvents()
 }
 
+const adminEditEvent = () => {
+    const newStatus = "approved"
+    const newEvent = { ...eventStore.selectedEvent, status: newStatus }
+
+    eventStore.adminEditEvent(eventStore.selectedEvent.id, newEvent)
+
+}
 
 const config = {
     enableTime: true,
@@ -91,45 +91,47 @@ const config = {
 
         <vue-final-modal v-model="modalStore.showModal" :click-to-close="false" classes="modal-container"
             content-class="modal-content">
-
-            <button class="modal__close" @click="modalStore.closeModal()">
-                X
-            </button>
-            <span class="modal__title">{{ eventStore.selectedEvent?.class }}</span>
             <div class="modal__content">
+                <button class="modal__close" @click="modalStore.closeModal()">
+                    X
+                </button>
                 <div class="modal-inner">
-                    <p>Name: {{ eventStore.selectedEvent?.title }}</p>
-                    <p>Status: {{ eventStore.selectedEvent?.status }}</p>
+                    <h1 class="modal__title">{{ eventStore.selectedEvent?.class }}</h1>
+                    <h3>Name:</h3>
+                    <h3> {{ eventStore.selectedEvent?.title }}</h3>
+                    <br />
+                    <h3>Status:</h3>
+                    <h3> {{ eventStore.selectedEvent?.status }}</h3> <br />
+
                     <label for="name">Name</label>
-                    <!-- <input type="text" id="name" :value="eventStore.selectedEvent?.title"
-                        @input="event => eventStore.changeName(event.target.value)"> -->
+                    <input id="name" v-model="eventStore.selectedEvent.title">
+                    <div class="raum">
+                        <label for="raum">Raum</label>
+                        <select id="raum" v-model="eventStore.selectedEvent.class">
+                            <option value="raum1">Raum 1</option>
+                            <option value="raum2">Raum 2</option>
+                            <option value="raum3">Raum 3</option>
+                        </select>
+                    </div>
 
-
-                    <input v-model="eventStore.selectedEvent.title">
-
-                    <select v-model="eventStore.selectedEvent.class">
-                        <option value="raum1">Raum 1</option>
-                        <option value="raum2">Raum 2</option>
-                        <option value="raum3">Raum 3</option>
-                    </select>
-
-                    <flat-pickr v-model="eventStore.selectedEvent.start" :config="config"> </flat-pickr>
-                    <flat-pickr v-model="eventStore.selectedEvent.end" :config="config"> </flat-pickr>
-
+                    <label for="startdate">Start</label>
+                    <flat-pickr id="startdate" v-model="eventStore.selectedEvent.start" :config="config"> </flat-pickr>
+                    <div>
+                        <label for="enddate">Ende</label>
+                        <flat-pickr id="enddate" v-model="eventStore.selectedEvent.end" :config="config"> </flat-pickr>
+                    </div>
                     <button @click="handleSubmit">Save</button>
                     <button @click="handleDelete">Delete</button>
-
+                    <button v-if="user.user?.admin" @click="adminEditEvent">Confirm Status</button>
                 </div>
 
             </div>
 
         </vue-final-modal>
-        <!-- <button @click="modalStore.openModal()">Open Modal</button> -->
+
     </div>
 
 </template>
-
-
 
 
 
@@ -143,19 +145,34 @@ const config = {
 
 :deep(.modal-content) {
     position: relative;
-    display: flex;
-    flex-direction: column;
     margin: 0 1rem;
-    padding: 1rem;
+
     border: 1px solid #e2e8f0;
     border-radius: 0.25rem;
     background: rgb(75, 75, 75);
 }
 
 .modal-inner {
-    display: flex;
-    flex-direction: column;
+    padding: 2em 4.5em;
 }
+
+label {
+    display: inline-block;
+    width: 60px;
+    margin-top: 1em;
+}
+
+input {
+    padding: .3em 1.4em;
+}
+
+select {
+    padding: .3em 1.4em;
+    cursor: pointer;
+}
+
+
+
 
 .modal__title {
     margin: 0 2rem 0 0;
@@ -163,10 +180,37 @@ const config = {
     font-weight: 700;
 }
 
+h3 {
+    display: inline-block;
+    margin-right: .3em;
+}
+
+h1::first-letter,
+h3::first-letter {
+    text-transform: capitalize;
+
+}
+
+.raum {
+    display: block;
+}
+
 .modal__close {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0em;
+    right: 0em;
+    cursor: pointer;
+    border: none;
+    padding: .5em .6em;
+    z-index: 2;
+}
+
+button {
+    margin-top: 2em;
+    margin-right: 2em;
+    cursor: pointer;
+    border: none;
+    padding: .4em 2em;
 }
 </style>
 

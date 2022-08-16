@@ -23,13 +23,9 @@ export const userStore = defineStore("userStore",{
                 this.accessToken=data.data.accessToken
                 this.error=""
                 this.router.push('/');
-   
               }
               catch (error) {
                 this.error=error.response.data
-                // console.log(error.response)
-                // alert(error)
-              
             }
           },
           async registerUser(user) {
@@ -42,7 +38,6 @@ export const userStore = defineStore("userStore",{
               }
               catch (error) {
                 this.error=error
-                console.log(error)
                 alert(error)
             }
           },

@@ -69,11 +69,7 @@ export const sceduledEvents = defineStore("sceduledEvents",{
           }
           axios.put(`${API_URL}/events/${id}`, {
               ...this.selectedEvent
-                  }).then(resp => {
-              
-               
-                }).catch(error => {
-          
+                  }).catch(error => {
               console.log(error);
           });
 
