@@ -15,7 +15,6 @@ const loginInfo = ref({
 )
 const loginUser = () => {
     user.loginUser(loginInfo.value)
-
 }
 </script>
 
@@ -28,6 +27,11 @@ const loginUser = () => {
                 email: test2@test <br />
                 passwort: test2<br />
                 admin: true
+            </span>
+            <span>
+                email: test@test <br />
+                passwort: test<br />
+                admin: false
             </span>
             <label for="email">Email</label>
             <input id="email" type="text" v-model="loginInfo.email" required>
