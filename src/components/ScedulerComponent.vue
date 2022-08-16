@@ -30,7 +30,7 @@ const onEventClick = (event, e) => {
     modalStore.openModal()
     e.stopPropagation()
     eventStore.updateSelectedEvent(newEvent)
-    // eventStore.fetchEvents()
+
 
 }
 
@@ -100,11 +100,9 @@ const onViewChange = (e) => {
         <template #event="{ event }">
             <div class="vuecal__event-title" v-html="event.title" />
             <div class="vuecal__event-title" v-html="event.class" />
-            <!-- <span v-if="$slots.actions" class="divider"></span> -->
             <div v-if="event.status == 'approved'" class="vuecal__event-approved" v-html="event.status" />
             <div v-if="event.status == 'pending'" class="vuecal__event-pending" v-html="event.status" />
             <small class="vuecal__event-time">
-                <!-- Using Vue Cal Date prototypes -->
                 <span>{{ event.start.formatTime("HH:mm") }}</span> -
                 <span>{{ event.end.formatTime("HH:mm") }}</span>
             </small>
