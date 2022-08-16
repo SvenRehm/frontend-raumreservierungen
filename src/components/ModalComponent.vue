@@ -104,7 +104,7 @@ const config = {
                     <h3> {{ eventStore.selectedEvent?.status }}</h3> <br />
 
                     <label for="name">Name</label>
-                    <input id="name" v-model="eventStore.selectedEvent.title">
+                    <input maxlength="20" id="name" v-model="eventStore.selectedEvent.title">
                     <div class="raum">
                         <label for="raum">Raum</label>
                         <select id="raum" v-model="eventStore.selectedEvent.class">
@@ -126,11 +126,8 @@ const config = {
                 </div>
 
             </div>
-
         </vue-final-modal>
-
     </div>
-
 </template>
 
 
@@ -183,6 +180,8 @@ select {
 h3 {
     display: inline-block;
     margin-right: .3em;
+    white-space: nowrap;
+    max-width: 200px;
 }
 
 h1::first-letter,

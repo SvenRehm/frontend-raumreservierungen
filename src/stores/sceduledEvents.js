@@ -12,10 +12,6 @@ export const sceduledEvents = defineStore("sceduledEvents",{
         selectedRoom:"",
         
     }),
-   
-    getters: { },
-
-  
     actions: {
       async fetchEvents() {
         try {
@@ -59,21 +55,19 @@ export const sceduledEvents = defineStore("sceduledEvents",{
                 });
             },
         editEvent(id){
-          const index = this.events.findIndex(object => {
-            return object.id === id;
-          }); 
-   
-          if (index !== -1) {
-            this.events[index]=this.selectedEvent
-          
-          }
-          axios.put(`${API_URL}/events/${id}`, {
-              ...this.selectedEvent
-                  }).catch(error => {
-              console.log(error);
-          });
-
+            const index = this.events.findIndex(object => {
+              return object.id === id;
+            }); 
     
+            if (index !== -1) {
+              this.events[index]=this.selectedEvent
+            
+            }
+            axios.put(`${API_URL}/events/${id}`, {
+                ...this.selectedEvent
+                    }).catch(error => {
+                console.log(error);
+            });
           },
         adminEditEvent(id,editedEvent){
             const index = this.events.findIndex(object => {
@@ -85,9 +79,9 @@ export const sceduledEvents = defineStore("sceduledEvents",{
             }
             axios.put(`${API_URL}/events/${id}`, {
               ...editedEvent
-          }).catch(error => {
-              console.log(error);
-          });
+            }).catch(error => {
+                console.log(error);
+            });
           }
     },
     

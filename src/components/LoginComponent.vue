@@ -4,8 +4,8 @@ import {
 } from 'vue';
 import { userStore } from '../stores/userStore'
 
-
 const user = userStore()
+
 
 const loginInfo = ref({
     email: "",
@@ -23,7 +23,6 @@ const loginUser = () => {
     <div class="container">
         <h1>Einloggen</h1>
         <span class="error" v-if="user.error">{{ user.error }}</span>
-
         <div class="form">
             <span>
                 email: test2@test <br />
@@ -37,11 +36,6 @@ const loginUser = () => {
 
             <button @click="loginUser()">Login</button>
         </div>
-        <div>
-
-
-        </div>
-
     </div>
 </template >
    
@@ -65,8 +59,6 @@ span.error {
     margin-top: .5em;
     color: red;
 }
-
-
 
 .form {
     width: 400px;

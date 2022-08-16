@@ -3,17 +3,14 @@ import axios from "axios"
 
 const USER_API_URL= "http://localhost:3000"
 
-
 export const userStore = defineStore("userStore",{
-
     state: () => ({
         user:null,
         accessToken:"",
         error:""
     }),
-    getters: {},
-    actions: {
 
+    actions: {
         async loginUser(user) {
             try {
               const data = await axios.post(`${USER_API_URL}/login`, {
